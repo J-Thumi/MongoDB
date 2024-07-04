@@ -1,0 +1,119 @@
+MongoDB is a popular open-source NoSQL database known for its flexibility, scalability, and developer-friendly features. It belongs to the document-oriented database category, where data is stored in flexible, JSON-like documents instead of traditional rows and columns found in relational databases. Here’s an overview of MongoDB:
+
+Key Features of MongoDB:
+Document-Oriented: MongoDB stores data in flexible, schema-less documents, making it easy to store and query complex hierarchical data structures.
+
+Schema Flexibility: Unlike relational databases, MongoDB does not require a predefined schema, allowing for dynamic and evolving data models.
+
+Scalability: MongoDB is designed for horizontal scalability, allowing for distributed database clusters to handle large volumes of data and high throughput.
+
+Query Language: MongoDB uses a query language similar to JSON (JavaScript Object Notation) called MongoDB Query Language (MQL), which supports rich query expressions and aggregation pipelines.
+
+Indexing: MongoDB supports various types of indexes to improve query performance, including single-field, compound, text, geospatial, and hashed indexes.
+
+High Availability: MongoDB supports automatic failover and replica sets, ensuring data availability and reliability.
+
+Aggregation Framework: MongoDB provides an expressive and powerful aggregation framework for data analysis and transformation tasks.
+
+Ad Hoc Queries: Developers can perform ad hoc queries on MongoDB without requiring predefined schemas or complex joins, facilitating rapid application development.
+
+Use Cases for MongoDB:
+Content Management: Storing and managing content such as blogs, articles, and multimedia.
+
+Real-Time Analytics: Analyzing real-time data streams and performing complex aggregations.
+
+Catalog and Product Data: Storing product catalogs and handling frequent updates and schema changes.
+
+Mobile and Social Infrastructure: Backend storage for mobile apps, handling user profiles, messages, and social interactions.
+
+IoT (Internet of Things): Storing and analyzing sensor data from IoT devices due to its flexible schema and scalability.
+
+Why Choose MongoDB?
+Flexibility: MongoDB’s flexible document model allows developers to work with evolving data models and adapt quickly to changing application requirements.
+
+Scalability: MongoDB scales horizontally across clusters of commodity servers, supporting large-scale deployments and high availability.
+
+Developer Productivity: Developers often prefer MongoDB for its ease of use, fast development cycles, and ability to handle unstructured or semi-structured data.
+
+Community and Ecosystem: MongoDB has a large and active community, extensive documentation, and support resources, making it easier for developers to get started and resolve issues.
+
+MongoDB is widely used across various industries and applications, from startups to large enterprises, for its ability to handle diverse data types, scale with ease, and support modern application development practices.
+
+we can host mongodb by installing mongodb locally or use a hosted service like mongo atlas
+make sure when installing you have also installed mongodb compass which is the UI like mysql in SQL
+install mongodb shell also
+
+mongodb stores data in collections and documents
+it stores data in bson form
+What is BSON? BSON stands for “Binary JSON,” and that's exactly what it was invented to be. BSON's binary structure encodes type and length information, which allows it to be traversed much more quickly compared to JSON.
+This means that BSON is compact for transmitting over a network, while JSON is human-readable and easier to work with in various contexts.
+
+Documents
+A document in MongoDB is a basic unit of data. It is similar to a row in a relational database but is more flexible due to its schema-less nature. Documents are stored in BSON format, which allows them to store various data types, including nested arrays and objects.
+Key Characteristics of Documents:
+Key-Value Pairs: Each document is composed of key-value pairs, where keys are strings and values can be various data types (string, number, array, object, etc.).
+Schema-Less: Documents in a collection do not need to have the same set of fields or structure.
+Nested Documents: Documents can contain sub-documents, allowing for complex data structures.
+
+Collections
+A collection in MongoDB is a grouping of documents. It is analogous to a table in a relational database but without a fixed schema, allowing for a more flexible and dynamic data model.
+Key Characteristics of Collections:
+Group of Documents: Collections contain multiple documents, each potentially with different structures.
+No Schema Enforcement: Documents within a collection can have different sets of fields and data types.
+Dynamic Structure: Collections can be created implicitly by inserting a document.
+
+
+
+the object can contain array string or even another object nested
+
+open mongo compass if the database is hosted out of the localhost eg in atlas input the connection string then but its locally press connect and ensure the mongo server is running 
+to start running the server just search services in the start then scroll to mongodb and make it start running
+
+create a database and a collection in it add data in json format if you insert the id is automatically added
+the database is bookstore and the collection books 
+if adding more than one document i.e in the case this case books
+ensure they are in an array
+we can say a collection is an array of objects i.e documents
+
+we can edit,delete documents using the icons on the top right corner on hover on the document
+we can also filter what we want to see eg if we want to see books with a rating of 9 in the query type
+
+        {rating:9}
+the books with a rating of 9 will show
+
+USING shell
+we can use the shell in compass or the command prompt ie cmd  but both are the same in syntax
+if cmd to enter in the mongo shell type mongosh then the shell will appear
+  
+
+  to show the databases currently existing: show dbs
+  to use a database : use dbname 
+  the database can be existing prior or not
+  to show current db we are in : db
+  to show all collections in a database: show collections
+  to get help with any command: help
+  to exit the mongo shell: exit
+  to add one new documents: db.collectionName.insertOne( object of the document you want to add)
+  the key does not contain quotes
+  you can also add documents to collections that do not exist the shell creates the collection and adds the document 
+  to add several documents : db.collectionName.insertMany(array of the documents you want to add)
+  to output the first 20 documents in the collection: db.collectionName.find()
+  to show the next 20 : it
+  to filter documents with same xtic: db.collectionName.find(the xtic you want in in object syntax whether one or many xtics)
+  i.e db.books.find({author:"Magret"})
+  the find method can have another argument of the properties I want to show
+  to show specific properties: db.collectionName.find(the xtic you want in in object syntax whether one or many xtics , object of the properties I want to show use the keys you want to see and assign values of 1 to them)
+  e.g i.e db.books.find({author:"Magret"},{author:1, title:1})
+  we always get the id back
+  we can get all docs but only show specific properties of them
+  i.e db.books.find({},{author:1, title:1})
+  this means we have nothing to filter with
+  returns the author and title of first 20 remember id ALWAYS shows
+  in symple terms the find method: db.collectionName.find({filter by what parameter},{fields to show})
+  to get a single document: db.collectionName.findOne({},{})
+  the syntax is the same to find()
+
+we can chain methods to sort, limit number of docs to get or get the number of documents returned
+    to get number of documents: db.collectionName.find().count()
+    to limit number of docs; db.collectionName.find().limit(number of docs to return)
+
