@@ -86,6 +86,8 @@ we can use the shell in compass or the command prompt ie cmd  but both are the s
 if cmd to enter in the mongo shell type mongosh then the shell will appear
   
 
+  the key does not contain quotes when using shell
+
   to show the databases currently existing: show dbs
   to use a database : use dbname 
   the database can be existing prior or not
@@ -116,4 +118,62 @@ if cmd to enter in the mongo shell type mongosh then the shell will appear
 we can chain methods to sort, limit number of docs to get or get the number of documents returned
     to get number of documents: db.collectionName.find().count()
     to limit number of docs; db.collectionName.find().limit(number of docs to return)
+    to sort: db.collectionName.find().sort(sort by what in object form)
+    eg db.collectionName.find().sort({title:1})
+    the 1 means in ascending order if descending use -1
+    you can sort and limit in a single statement
 
+
+key is the field name value is the field value in mongo terminology
+i can say an object is a container of info of a specific item
+eg the reviews document stores reviews of a specific book this reviews have different pple who post them the content is not the same and much more info is not the same so the review doc of a specific book becomes an array of objects the object contains the info of the review
+
+
+we can nest documents to avoid having othe collections 
+eg in the books document we can have the reviews belonging to the book nested in it 
+
+
+
+complex queries and operators
+operators are denoted by a dollar sign
+maybe we want books with a rating greater than 7
+
+        filter rating greater than 7: db.collectionName.find({rating: {$gt: 7} })
+
+                            Comparison operators
+            The following operators can be used in queries to compare values:
+                        $eq: Values are equal
+                        $ne: Values are not equal
+                        $gt: Value is greater than another value
+                        $gte: Value is greater than or equal to another value
+                        $lt: Value is less than another value
+                        $lte: Value is less than or equal to another value
+                        $in: Value is matched within an array
+                        $in: Value is matched not within an array
+
+
+                                            Logical operators
+                    The following operators can logically compare multiple queries.
+                        $and: Returns documents where both queries match
+                        $or: Returns documents where either query matches
+                        $nor: Returns documents where both queries fail to match
+                        $not: Returns documents where the query does not match
+
+ or and nor require multiple key value pairs meaning we pass arrays to them
+        eg db.Books.find({$or: [{rating: 8 },{rating: 9}]})  
+
+
+                                        Evaluation
+                The following operators assist in evaluating documents.
+                    $regex: Allows the use of regular expressions when evaluating field values
+                    $text: Performs a text search
+                    $where: Uses a JavaScript expression to match documents
+
+    the combo: db.Books.find({$or: [{rating: {$gt:7}}, {author:"magret"}]})
+
+    $in and &nin
+        we can use combinations of $or,$gte,$lte to access documents in a certain range 
+        to simplify we can use $in
+
+        db.Books.find({rating: {$in: [7,8,9]}})
+        db.Books.find({rating: {$nin: [7,8,9]}})
