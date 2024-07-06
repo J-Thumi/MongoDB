@@ -87,6 +87,7 @@ if cmd to enter in the mongo shell type mongosh then the shell will appear
   
 
   the key does not contain quotes when using shell
+  it only contains when filtering using the properties in the nested docs
 
   to show the databases currently existing: show dbs
   to use a database : use dbname 
@@ -177,3 +178,144 @@ maybe we want books with a rating greater than 7
 
         db.Books.find({rating: {$in: [7,8,9]}})
         db.Books.find({rating: {$nin: [7,8,9]}})
+
+
+    Books can be of 1,2 or even more genres  hence the genre key has an array of values
+        1. to get where fantasy is : db.Books.find({genre: "fantasy"})
+        2. to get where only fantasy is : db.Books.find({genre: ["fantasy"]})
+        3. to get where only fantasy and magic are : db.Books.find({genre: ["fantasy", "magic"]})
+        4. to get where fantasy and magic are : db.Books.find({genre: {$all: ["fantasy", "magic"]}})
+        1 and 4 mean there can be other genres in the docs returned
+
+    we can filter by the name of the person who sent a review
+    the name is in the review doc which is in the Book doc
+    db.Book.find("review.name": "Jos")
+
+
+    deleting documents
+    db.Books.deleteOne({_id: ObjectId('66865a73d52e03a663f3e702')})
+    db.Books.deleteMany({author:"Magret"})
+
+
+    we can import or export data to and from compass
+
+
+                    updating documents
+                we can use updateOne or updateMany
+    to update one document: db.collectionName.updateOne({object containing what},{$set:{what you want to change}})
+    db.Books.updateOne({_id: ObjectId('66865a73d52e03a663f3e702')},{$set: {author:"Jos"}})
+    db.Books.updateOne({_id: ObjectId('66865a73d52e03a663f3e702')},{$set: {author:"Jos", pages:900}})
+
+to update many documents: db.collectionName.updateOne({object containing what},{$set:{what you want to change}})
+db.Books.updateMany({author: "Magret"} , {$set: {author:"Margrett"}})
+
+
+            if you want to increament a value
+            db.Books.updateOne({author:"Jos"},{$inc: {pages: 2}})
+            db.Books.updateOne({author:"Jos"},{$inc: {pages: -2}})
+
+
+            we can also add and revove values in an arrary using $push and $pull
+            db.Books.updateOne({author:"Jos"},{$pull: {genre: "fantasy"}})
+
+            to add several items to the array use the $each operator
+            db.Books.updateOne({author:"Jos"},{$pull: {genre: {$each : [ "fantasy","magic"]}}})
+
+
+
+            MongoDB drivers are libraries that enable applications to interact with a MongoDB database. They provide the necessary tools and functions to perform CRUD (Create, Read, Update, Delete) operations and other database interactions using various programming languages.
+
+                Key Features of MongoDB Drivers:
+                Connectivity: Establish connections to MongoDB instances.
+                CRUD Operations: Perform basic Create, Read, Update, and Delete operations.
+                Query Language: Support MongoDB's query language for complex queries.
+                Aggregation: Enable data aggregation using MongoDB's powerful aggregation framework.
+                Indexing: Support creating and using indexes to optimize query performance.
+                Transactions: Support multi-document ACID transactions in replica sets.
+                Change Streams: Enable applications to listen for real-time data changes
+
+
+MongoDB Node.js Driver
+npm install mongodb
+
+
+
+Basic Usage
+Here's how you use the find() method in the MongoDB driver:
+
+Install MongoDB Node.js Driver:
+If you haven't already, install the MongoDB driver using npm:
+
+
+npm install mongodb
+Connect to MongoDB and Query Documents:
+
+
+main().catch(console.error);
+Querying with Filters
+You can pass a query object to the find() method to filter documents based on specific criteria.
+
+javascript
+Copy code
+// Find documents where the 'name' field is 'Alice'
+const cursor = collection.find({ name: 'Alice' });
+Projecting Fields
+You can specify which fields to include or exclude in the returned documents using the projection option.
+
+javascript
+Copy code
+// Find documents and only include the 'name' and 'age' fields
+const cursor = collection.find({}, { projection: { name: 1, age: 1 } });
+Limiting and Skipping Results
+You can limit the number of documents returned and skip a certain number of documents using limit() and skip() methods.
+
+javascript
+Copy code
+// Limit the number of documents to 5 and skip the first 10 documents
+const cursor = collection.find().limit(5).skip(10);
+Sorting Results
+You can sort the results using the sort() method.
+
+javascript
+Copy code
+// Sort documents by 'age' field in ascending order
+const cursor = collection.find().sort({ age: 1 });
+Example: Combining Filters, Projections, and Other Options
+javascript
+Copy code
+const { MongoClient } = require('mongodb');
+
+const url = 'mongodb://localhost:27017';
+const dbName = 'myDatabase';
+
+const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+
+async function main() {
+  try {
+    await client.connect();
+    console.log('Connected successfully to MongoDB');
+
+    const db = client.db(dbName);
+    const collection = db.collection('myCollection');
+
+    // Query: Find documents where 'age' is greater than 25, project 'name' and 'age', limit to 5, skip the first 2, and sort by 'age'
+    const cursor = collection.find(
+      { age: { $gt: 25 } }, // Filter
+      { projection: { name: 1, age: 1 } } // Projection
+    ).limit(5).skip(2).sort({ age: 1 });
+
+    await cursor.forEach((doc) => console.log(doc));
+  } finally {
+    await client.close();
+  }
+}
+
+main().catch(console.error);
+Summary
+find(query, projection): Used to query documents with optional projection to specify fields.
+Cursor Methods:
+cursor.forEach(callback): Iterates over each document.
+cursor.limit(n): Limits the number of documents.
+cursor.skip(n): Skips the first n documents.
+cursor.sort(sortObj): Sorts the documents.
+The find() method is a powerful and flexible way to query documents in MongoDB, providing a wide range of options to filter, project, limit, skip, and sort the results.
