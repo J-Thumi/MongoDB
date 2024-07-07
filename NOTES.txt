@@ -318,4 +318,33 @@ cursor.forEach(callback): Iterates over each document.
 cursor.limit(n): Limits the number of documents.
 cursor.skip(n): Skips the first n documents.
 cursor.sort(sortObj): Sorts the documents.
-The find() method is a powerful and flexible way to query documents in MongoDB, providing a wide range of options to filter, project, limit, skip, and sort the results.
+The find() method is a powerful and flexible way to query documents in MongoDB, providing a wide range of options to filter
+, project, limit, skip, and sort the results.
+
+
+when we are looking for items the database server goes thru all the collection to find the item in search
+we can use indexes to simplify this operation in the shell
+
+to know the info about a specific query: db.books.find({rating: 8}).explain('executionStats')
+if you go to docsExamined it shows the number of books 
+This can be time consuming and energy consuming too
+To avoid this use indexes
+
+To create an index: db.Books.createIndex({pages:209})
+To get indexes: db.Books.getIndexes()
+
+now if you: db.books.find({pages:209}).explain('executionStats')
+if you go to docsExamined it shows the number of books in the index created above hence this operation is faster
+
+To delete the index: db.Books.dropIndex({pages:209})
+
+
+
+
+mongo atlas 
+create a data base
+copy the connection string
+provide who can acess the database
+c
+
+
