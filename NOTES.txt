@@ -348,3 +348,8 @@ provide who can acess the database
 c
 
 
+
+
+Aggregation
+
+PROCESS of selecting data from a collection to process multiple documents and return computed results
